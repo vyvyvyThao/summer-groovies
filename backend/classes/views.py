@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view
 
 from django.shortcuts import get_object_or_404
 
+from api.authentication import TokenAuthentication
+
 from .models import Class
 from .serializers import ClassSerializer
 from .permissions import IsStaffEditorPermission
@@ -46,10 +48,10 @@ class_mixin_view = ClassMixinView.as_view()
 class ClassListCreateAPIView(generics.ListCreateAPIView):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
-    authentication_classes = [
-        authentication.SessionAuthentication,
-        authentication.TokenAuthentication
-    ]
+    # authentication_classes = [
+    #     authentication.SessionAuthentication,
+    #     TokenAuthentication
+    # ]
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
 
@@ -67,7 +69,7 @@ class_list_create_view = ClassListCreateAPIView.as_view()
 class ClassDetailAPIView(generics.RetrieveAPIView):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
-    authentication_classes = [authentication.SessionAuthentication]
+    # authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
 class_detail_view = ClassDetailAPIView.as_view()
@@ -79,7 +81,7 @@ class ClassUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ClassSerializer
     lookup_field = 'pk'
 
-    authentication_classes = [authentication.SessionAuthentication]
+    # authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_update(self, serializer):
@@ -97,7 +99,7 @@ class ClassDestroyAPIView(generics.DestroyAPIView):
     serializer_class = ClassSerializer
     lookup_field = 'pk'
 
-    authentication_classes = [authentication.SessionAuthentication]
+    # authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_destroy(self, instance):

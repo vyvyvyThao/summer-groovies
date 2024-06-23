@@ -1,14 +1,15 @@
-from rest_framework import generics, mixins, permissions, authentication
+from rest_framework import generics, mixins   #, permissions, authentication
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from django.shortcuts import get_object_or_404
 
-from api.authentication import TokenAuthentication
+# from api.authentication import TokenAuthentication
+from api.mixins import StaffEditorPermissionMixin
 
 from .models import Class
 from .serializers import ClassSerializer
-from .permissions import IsStaffEditorPermission
+from api.permissions import IsStaffEditorPermission
 
 from datetime import date
 
@@ -34,9 +35,9 @@ class ClassMixinView(
         return self.create(request, *args, **kwargs)
     
     def perform_create(self, serializer):
-        start_date = serializer.validated_data.get('start_date')
+        start_date = serializer.validated_data.get('start_date') or None
 
-        if not start_date:
+        if start_date is None:
             start_date = date.today()
 
         serializer.save(start_date=start_date)
@@ -44,18 +45,14 @@ class ClassMixinView(
 
 class_mixin_view = ClassMixinView.as_view()
 
-# create
-class ClassListCreateAPIView(generics.ListCreateAPIView):
+# create, read
+class ClassListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
-    # authentication_classes = [
-    #     authentication.SessionAuthentication,
-    #     TokenAuthentication
-    # ]
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
-
 
     def perform_create(self, serializer):
+        email = serializer.validated_data.pop('email')
+        print(email)
         start_date = serializer.validated_data.get('start_date') or None
 
         if start_date is None:
@@ -66,23 +63,19 @@ class_list_create_view = ClassListCreateAPIView.as_view()
 
 
 # read
-class ClassDetailAPIView(generics.RetrieveAPIView):
+class ClassDetailAPIView(StaffEditorPermissionMixin, generics.RetrieveAPIView):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
-    # authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
 class_detail_view = ClassDetailAPIView.as_view()
 
 
 # update
-class ClassUpdateAPIView(generics.UpdateAPIView):
+class ClassUpdateAPIView(StaffEditorPermissionMixin, generics.UpdateAPIView):
+    
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
     lookup_field = 'pk'
-
-    # authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -94,18 +87,17 @@ class_update_view = ClassUpdateAPIView.as_view()
 
 
 # delete
-class ClassDestroyAPIView(generics.DestroyAPIView):
+class ClassDestroyAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
+    
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
     lookup_field = 'pk'
-
-    # authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
 
 class_delete_view = ClassDestroyAPIView.as_view()
+
 
 @api_view(['GET', 'POST'])
 def class_alt_view(request, pk=None, *args, **kwargs):
@@ -135,7 +127,7 @@ def class_alt_view(request, pk=None, *args, **kwargs):
             if start_date is None:
                 start_date = date.today()
 
-            serializer.save(start_date=start_date)
+            serializer.save(start_date=start_date)           ## THIS DOESN'T WORK AT ALL
            
             return Response(serializer.data)
         return Response({"Invalid": "not good data"}, status=400)

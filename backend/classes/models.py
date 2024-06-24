@@ -1,9 +1,14 @@
 from django.db import models
+from django.conf import settings
 from datetime import date
 from datetime import timedelta
 
+
+User = settings.AUTH_USER_MODEL
+
 # Create your models here.
 class Class(models.Model):
+    user = models.ForeignKey(User, default=1, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=120)
     start_date = models.DateField()
     schedule = models.CharField(max_length=300, default='')

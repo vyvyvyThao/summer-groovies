@@ -15,4 +15,4 @@ def validate_title_no_hello(value):
         raise serializers.ValidationError('Hello is not allowed')
     return value
 
-unique_class_title = UniqueValidator(queryset=Class.objects.all())
+unique_class_title = UniqueValidator(queryset=Class.objects.all(), lookup='iexact')

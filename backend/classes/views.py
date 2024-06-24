@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 
 # from api.authentication import TokenAuthentication
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import (StaffEditorPermissionMixin, UserQuerysetMixin)
 
 from .models import Class
 from .serializers import ClassSerializer
@@ -46,24 +46,40 @@ class ClassMixinView(
 class_mixin_view = ClassMixinView.as_view()
 
 # create, read
-class ClassListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
+class ClassListCreateAPIView(
+    UserQuerysetMixin,
+    StaffEditorPermissionMixin, 
+    generics.ListCreateAPIView):
+
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
 
     def perform_create(self, serializer):
-        email = serializer.validated_data.pop('email')
-        print(email)
         start_date = serializer.validated_data.get('start_date') or None
 
         if start_date is None:
             start_date = date.today()
 
-        serializer.save(start_date=start_date)
+        serializer.save(user=self.request.user, start_date=start_date)
+
+    # def get_queryset(self, *args, **kwargs):
+    #     qs = super().get_queryset(*args, **kwargs)        
+    #     request = self.request
+    #     user = request.user
+    #     if not user.is_authenticated:
+    #         return Class.objects.none()
+    #     # print(request.user)
+    #     return qs.filter(user=request.user)
+
 class_list_create_view = ClassListCreateAPIView.as_view()
 
 
 # read
-class ClassDetailAPIView(StaffEditorPermissionMixin, generics.RetrieveAPIView):
+class ClassDetailAPIView(
+    StaffEditorPermissionMixin, 
+    UserQuerysetMixin, 
+    generics.RetrieveAPIView):
+
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
 
@@ -71,7 +87,10 @@ class_detail_view = ClassDetailAPIView.as_view()
 
 
 # update
-class ClassUpdateAPIView(StaffEditorPermissionMixin, generics.UpdateAPIView):
+class ClassUpdateAPIView(
+    StaffEditorPermissionMixin, 
+    UserQuerysetMixin, 
+    generics.UpdateAPIView):
     
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
@@ -87,7 +106,10 @@ class_update_view = ClassUpdateAPIView.as_view()
 
 
 # delete
-class ClassDestroyAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
+class ClassDestroyAPIView(
+    StaffEditorPermissionMixin, 
+    UserQuerysetMixin, 
+    generics.DestroyAPIView):
     
     queryset = Class.objects.all()
     serializer_class = ClassSerializer

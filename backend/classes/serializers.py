@@ -13,6 +13,7 @@ class ClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Class
         fields = [
+            # 'user',
             'url',
             'edit_url',
             'title',

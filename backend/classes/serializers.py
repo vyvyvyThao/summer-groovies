@@ -1,19 +1,22 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
+from api.serializers import UserPublicSerializer, UserClassInlineSerializer
 from .models import Class
 from . import validators
 
 class ClassSerializer(serializers.ModelSerializer):
+    owner = UserPublicSerializer(source='user', read_only=True)
+    related_classes = UserClassInlineSerializer(source='user.class_set.all', read_only=True, many=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(view_name='class-detail', lookup_field='pk')
-    # email = serializers.EmailField(write_only=True)
     
     title = serializers.CharField(validators=[validators.validate_title_no_hello, validators.unique_class_title])
+    
     class Meta:
         model = Class
         fields = [
-            # 'user',
+            'owner',
             'url',
             'edit_url',
             'title',
@@ -21,9 +24,15 @@ class ClassSerializer(serializers.ModelSerializer):
             'end_date',
             'schedule',
             'description',
-            'slots_remaining'
+            'slots_remaining',
+            'related_classes',
         ]
     
+    def get_my_user_data(self, obj):
+         return {
+             'username': obj.user.username
+         }
+
     # def validate_title(self, value):
     #     request = self.context.get('request')
     #     user = request.user

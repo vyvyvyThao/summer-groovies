@@ -7,7 +7,6 @@ from . import validators
 
 class ClassSerializer(serializers.ModelSerializer):
     owner = UserPublicSerializer(source='user', read_only=True)
-    related_classes = UserClassInlineSerializer(source='user.class_set.all', read_only=True, many=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(view_name='class-detail', lookup_field='pk')
     
@@ -25,7 +24,6 @@ class ClassSerializer(serializers.ModelSerializer):
             'schedule',
             'description',
             'slots_remaining',
-            'related_classes',
         ]
     
     def get_my_user_data(self, obj):

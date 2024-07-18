@@ -1,3 +1,5 @@
+import random
+
 from django.db import models
 from django.conf import settings
 from django.db.models import Q
@@ -7,6 +9,8 @@ from datetime import timedelta
 
 
 User = settings.AUTH_USER_MODEL
+
+TAGS_MODEL_VALUES = ['beginner', 'basic', 'intermediate']
 
 class ClassQuerySet(models.QuerySet):
     def is_public(self):
@@ -41,6 +45,12 @@ class Class(models.Model):
     public = models.BooleanField(default=True)
 
     objects = ClassManager()
+
+    def is_public(self) -> bool:
+        return self.public 
+    
+    def get_tags_list(self):
+        return [random.choice(TAGS_MODEL_VALUES)]
 
     @property
     def end_date(self):

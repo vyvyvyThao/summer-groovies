@@ -37,8 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # third part api services
+    'algoliasearch_django',
+
+    # third party packages
     'rest_framework',
     'rest_framework.authtoken',
+
+    # internal apps
     'api',
     'classes',
     'search',
@@ -138,4 +145,11 @@ REST_FRAMEWORK = {
     
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
+}
+
+# environment variables -> django-dotenv (.venv)
+ALGOLIA = {
+    'APPLICATION_ID': 'FTTPNI3HOI',
+    'API_KEY': '7e050b70e43d2882dfa762f2942b8ce5',
+    'INDEX_PREFIX': 'wendy'
 }

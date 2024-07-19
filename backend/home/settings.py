@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # third part api services
+    # third party api services
     'algoliasearch_django',
 
     # third party packages

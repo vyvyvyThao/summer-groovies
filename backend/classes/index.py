@@ -5,7 +5,7 @@ from .models import Class
 
 @register(Class)
 class ClassIndex(AlgoliaIndex):
-    should_index = 'is_public'
+    # should_index = 'is_public'
     fields = [
         'title',
         'start_date',
@@ -13,5 +13,10 @@ class ClassIndex(AlgoliaIndex):
         'user',
         'public'
     ]
+
+    settings = {
+        'searchableAttributes': ['title'],
+        'attributesForFaceting': ['user', 'public']
+    }
 
     tags = 'get_tags_list'

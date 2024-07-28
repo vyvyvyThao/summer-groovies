@@ -46,6 +46,21 @@ class Class(models.Model):
 
     objects = ClassManager()
 
+    @property
+    def path(self):
+        return f'/classes/{self.pk}/'
+    
+    def get_absolute_url(self):
+        return f'/api/classes/{self.pk}/'
+    
+    @property
+    def endpoint(self):
+        return self.get_absolute_url()
+
+    @property
+    def body(self):
+        return self.description
+
     def is_public(self) -> bool:
         return self.public 
     

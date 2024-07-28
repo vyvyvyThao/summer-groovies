@@ -10,8 +10,11 @@ class ClassIndex(AlgoliaIndex):
         'title',
         'start_date',
         'schedule',
+        'body',
         'user',
-        'public'
+        'public',
+        'path',
+        'endpoint',
     ]
 
     settings = {

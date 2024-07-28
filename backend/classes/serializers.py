@@ -7,23 +7,26 @@ from . import validators
 
 class ClassSerializer(serializers.ModelSerializer):
     owner = UserPublicSerializer(source='user', read_only=True)
-    edit_url = serializers.SerializerMethodField(read_only=True)
-    url = serializers.HyperlinkedIdentityField(view_name='class-detail', lookup_field='pk')
-    
+    # edit_url = serializers.SerializerMethodField(read_only=True)
+    # url = serializers.HyperlinkedIdentityField(view_name='class-detail', lookup_field='pk')
     title = serializers.CharField(validators=[validators.validate_title_no_hello, validators.unique_class_title])
-    
+    body = serializers.CharField(source='description')
+   
     class Meta:
         model = Class
         fields = [
             'owner',
-            'url',
-            'edit_url',
+            # 'url',
+            # 'edit_url',
             'title',
             'start_date',
             'end_date',
             'schedule',
-            'description',
+            'body',
             'slots_remaining',
+            'public',
+            'path',
+            'endpoint',
         ]
     
     def get_my_user_data(self, obj):

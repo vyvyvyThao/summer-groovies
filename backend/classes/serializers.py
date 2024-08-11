@@ -12,7 +12,7 @@ class ClassSerializer(serializers.ModelSerializer):
     title = serializers.CharField(validators=[validators.validate_title_no_hello, validators.unique_class_title])
     body = serializers.CharField(source='description')
    
-    class Meta:
+    class Meta: 
         model = Class
         fields = [
             'owner',
@@ -30,9 +30,9 @@ class ClassSerializer(serializers.ModelSerializer):
         ]
     
     def get_my_user_data(self, obj):
-         return {
-             'username': obj.user.username
-         }
+        return {
+            'username': obj.user.username
+        }
 
     # def validate_title(self, value):
     #     request = self.context.get('request')

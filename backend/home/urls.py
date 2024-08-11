@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('api/search/', include('search.urls')),
     path('api/articles/', include('articles.urls')),
+    path('api/users/', include ('users.urls')),
     path('api/classes/', include('classes.urls')),
     path('api/v2/', include('home.routers'))
     

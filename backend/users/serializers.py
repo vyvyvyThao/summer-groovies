@@ -6,7 +6,6 @@ from . import validators
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(validators=[validators.validate_username_no_special_char])
-    # tel = serializers.CharField(source='tel')
 
     class Meta: 
         model = User
@@ -17,7 +16,6 @@ class UserSerializer(serializers.ModelSerializer):
                 'birth_year',
                 'facebook_url',
                 'phone_number',
-                # 'tel',
                 'email',
             ]
     

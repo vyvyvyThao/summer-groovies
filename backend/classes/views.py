@@ -74,7 +74,6 @@ class ClassListCreateAPIView(
 
 class_list_create_view = ClassListCreateAPIView.as_view()
 
-
 # read
 class ClassDetailAPIView(
     StaffEditorPermissionMixin, 
@@ -122,7 +121,7 @@ class ClassDestroyAPIView(
 class_delete_view = ClassDestroyAPIView.as_view()
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
 def class_alt_view(request, pk=None, *args, **kwargs):
     method = request.method 
 

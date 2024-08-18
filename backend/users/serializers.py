@@ -6,6 +6,7 @@ from . import validators
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(validators=[validators.validate_username_no_special_char])
+    class_names = serializers.SerializerMethodField()
 
     class Meta: 
         model = User
@@ -17,5 +18,9 @@ class UserSerializer(serializers.ModelSerializer):
                 'facebook_url',
                 'phone_number',
                 'email',
+                'class_names'
             ]
+        
+    def get_class_names(self, obj):
+        return [dance_class.title for dance_class in obj.registered_classes.all()]
     

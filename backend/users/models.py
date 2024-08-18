@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from phonenumber_field.modelfields import PhoneNumberField
 
+from classes.models import Class
 # Create your models here.
 
 class UserQuerySet(models.QuerySet):
@@ -44,7 +45,6 @@ class AccountManager(BaseUserManager):
         # return User.objects.filter(username__icontains=query)
         return self.get_queryset().search(query, user=user)
     
-
 class User(AbstractBaseUser):
     username = models.CharField(max_length=50)
     full_name = models.CharField(max_length=50)
@@ -53,8 +53,31 @@ class User(AbstractBaseUser):
     facebook_url = models.URLField(unique=True)
     phone_number = PhoneNumberField(region="VN")  
     email = models.EmailField(unique=True)
+    registered_classes = models.ManyToManyField('classes.Class', related_name='students')
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["username", "full_name", "password", "phone_number"]
 
     objects = AccountManager()
+
+            
+    def register(self, class_title):
+        try:
+            wish = Class.objects.get(title=class_title)
+            print(wish.title)
+        except Class.DoesNotExist:
+            return "Class not found."
+        
+        if self in wish.student_list.all():
+            return "You already registered."
+
+        if wish.slots_remaining > 0:
+            self.registered_classes.add(wish)
+            self.save()
+
+            wish.slots_remaining -= 1
+            wish.student_list.add(self)
+            wish.save()
+            return "Registration successful!"
+        else:
+            return "This class is full."            

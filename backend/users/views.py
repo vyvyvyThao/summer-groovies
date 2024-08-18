@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from .models import User
 from .serializers import UserSerializer
 
-from . import client
+from . import search_client
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
@@ -47,17 +47,17 @@ class SearchListView(generics.GenericAPIView): # deo hien
     
     def get(self, request, *args, **kwargs):
         user = None
-       
+    
         if request.user.is_authenticated:
             user = request.user.username
-       
+    
         query = request.GET.get('q')
         tag = request.GET.get('tag') or None
 
         if not query:
             return Response('', status=400)
         
-        results = client.perform_search(query, tags=tag, user=user)
+        results = search_client.perform_search(query, tags=tag, user=user)
         return Response(results)
 
 class UserUpdateAPIView(generics.UpdateAPIView):

@@ -1,9 +1,11 @@
 from rest_framework import generics
 from rest_framework.response import Response
+from algoliasearch_django import raw_search
 
 from classes.models import Class
 from classes.serializers import ClassSerializer
 from . import client
+from users.models import User 
 
 class SearchListView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
@@ -19,7 +21,8 @@ class SearchListView(generics.GenericAPIView):
         if not query:
             return Response('', status=400)
         
-        results = client.perform_search(query, tags=tag, user=user, public=public)
+        # results = client.perform_search(query, tags=tag, user=user, public=public)
+        results = raw_search(User, query)
         return Response(results)
 
 class SearchListOldView(generics.ListAPIView):

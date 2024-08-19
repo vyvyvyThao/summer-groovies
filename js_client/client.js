@@ -1,4 +1,3 @@
-//TO-DO: Write this using React
 
 const contentContainer = document.getElementById("content-container")
 const loginForm = document.getElementById('login-form')
@@ -189,7 +188,7 @@ instantsearch.widgets.refinementList({
 // }),
 
 
-  instantsearch.widgets.hits({
+instantsearch.widgets.hits({
     container: '#hits',
     templates: {
         item: `

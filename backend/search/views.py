@@ -21,8 +21,8 @@ class SearchListView(generics.GenericAPIView):
         if not query:
             return Response('', status=400)
         
-        # results = client.perform_search(query, tags=tag, user=user, public=public)
-        results = raw_search(User, query)
+        results = client.perform_search(query, tags=tag, user=user, public=public)
+        # results = raw_search(User, query)
         return Response(results)
 
 class SearchListOldView(generics.ListAPIView):

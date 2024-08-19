@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Q
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils.translation import gettext_lazy as _
+
 from phonenumber_field.modelfields import PhoneNumberField
 
 from classes.models import Class
@@ -31,13 +33,36 @@ class AccountManager(BaseUserManager):
             birth_year = birth_year,
             facebook_url = facebook_url,
             phone_number = phone_number,
-            email = email,
+            email = self.normalize_email(email),
         )
 
         user.set_password(password)
         user.save(using=self.__db)
         return user
     
+    def create_superuser(self, username, full_name, birth_year, facebook_url, phone_number, email, password=None, **extra_fields):
+        user = self.create_user(
+            username=username,
+            full_name=full_name,
+            birth_year=birth_year,
+            facebook_url = facebook_url,
+            phone_number = phone_number,
+            email=email,
+            password=password,
+        )
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+
+        user.save(using=self._db)    
+
+        return user
+
     def get_queryset(self, *args, **kwargs):
         return UserQuerySet(self.model, using=self._db)
 
@@ -45,8 +70,8 @@ class AccountManager(BaseUserManager):
         # return User.objects.filter(username__icontains=query)
         return self.get_queryset().search(query, user=user)
     
-class User(AbstractBaseUser):
-    username = models.CharField(max_length=50)
+class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=50, unique=True)
     full_name = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
     birth_year = models.IntegerField()
@@ -56,7 +81,7 @@ class User(AbstractBaseUser):
     registered_classes = models.ManyToManyField('classes.Class', related_name='students')
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["username", "full_name", "password", "phone_number"]
+    REQUIRED_FIELDS = ["full_name", "password", "phone_number"]
 
     objects = AccountManager()
 

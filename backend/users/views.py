@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from algoliasearch_django import raw_search
+
 from django.shortcuts import get_object_or_404
 
 from .models import User
@@ -57,7 +59,8 @@ class SearchListView(generics.GenericAPIView): # deo hien
         if not query:
             return Response('', status=400)
         
-        results = search_client.perform_search(query, tags=tag, user=user)
+        # results = search_client.perform_search(query, tags=tag, user=user)
+        results = raw_search(User, query)
         return Response(results)
 
 class UserUpdateAPIView(generics.UpdateAPIView):

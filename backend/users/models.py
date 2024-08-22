@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -37,10 +38,10 @@ class AccountManager(BaseUserManager):
         )
 
         user.set_password(password)
-        user.save(using=self.__db)
+        user.save()
         return user
     
-    def create_superuser(self, username, full_name, birth_year, facebook_url, phone_number, email, password=None, **extra_fields):
+    def create_superuser(self, username, full_name, birth_year=None, facebook_url=None, phone_number=None, email=None, password=None, **extra_fields):
         user = self.create_user(
             username=username,
             full_name=full_name,
@@ -59,8 +60,7 @@ class AccountManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
 
-        user.save(using=self._db)    
-
+        user.save()    
         return user
 
     def get_queryset(self, *args, **kwargs):
@@ -73,19 +73,28 @@ class AccountManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50, unique=True)
     full_name = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    birth_year = models.IntegerField()
-    facebook_url = models.URLField(unique=True)
-    phone_number = PhoneNumberField(region="VN")  
-    email = models.EmailField(unique=True)
-    registered_classes = models.ManyToManyField('classes.Class', related_name='students')
+    birth_year = models.IntegerField(null=True)
+    facebook_url = models.URLField(unique=True, null=True)
+    phone_number = PhoneNumberField(region="VN", null=True)  
+    email = models.EmailField(unique=True, null=True)
+    is_staff = models.BooleanField(
+        _("staff status"),
+        default=False,
+        help_text=_("Designates whether the user can log into this admin site."),
+    )
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["full_name", "password", "phone_number"]
+    # REQUIRED_FIELDS = ["full_name", "password", "phone_number"]
+    REQUIRED_FIELDS = ["full_name", "password"]
 
     objects = AccountManager()
 
-            
+    registered_classes = models.ManyToManyField('classes.Class', related_name='students')
+
+    def save(self, **kwargs) -> None:
+        self.set_password(self.password)
+        return super().save(**kwargs)
+
     def register(self, class_title):
         try:
             wish = Class.objects.get(title=class_title)

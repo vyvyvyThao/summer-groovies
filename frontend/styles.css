@@ -1,0 +1,37 @@
+
+nav.navbar #navbarExampleTransparentExample.navbar-menu .navbar-end .buttons {
+    margin-right: 30px; /* Adjust this value to change the distance */
+}
+
+.navbar-link::after {
+    border-color: black transparent transparent transparent; /* Change arrow color to black */
+}
+
+footer.footer img.logo {
+    max-width: 30px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+section.section img {
+    width: 94%;
+}
+
+section.section p {
+    position: relative;
+    width: 94%;
+    left: 3%;
+}
+
+footer.column {
+    left: 50px;
+}
+
+footer.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="styles.css">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                });
+        });
+    </script>
+    <title>Summer Groovies</title>
+    <!-- <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon"> -->
+    <!-- Bulma Version 1-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"></script>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+    <section class="hero">
+        <figure class="image">
+            <img src=assets\banner.png>
+        </figure>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="title has-text-centered">About Summer Groovies</h2>
+            <p> Chuỗi các lớp học nhảy Summer Groovies được lập ra bởi một nhóm học sinh, sinh viên đã hoặc đang hoạt động trong câu lạc bộ Nhảy trường THPT Chuyên Hùng Vương, 
+                có niềm đam mê to lớn với nhảy, và đã gắn bó với bộ môn này trong nhiều năm. Với mục đích truyền tải những giá trị tích cực của nhảy múa và những kiến thức 
+                chúng mình có về nhảy đến những học sinh tiềm năng đang quan tâm đến bộ môn này trong thành phố Việt Trì, chúng mình mở ra các khóa học nhảy cho trẻ em từ 7 tuổi 
+                trở lên và người lớn với các thể loại, trình độ khác nhau.
+                <br>
+                <br>
+                Số lượng học sinh tối đa là 15 người/lớp. Học phí mỗi khóa học là 400k/10 buổi. 
+                <br>
+            <div class="columns is-centered" style="padding: 2rem">
+                <div class="column">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="assets\basic_hiphop.png">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4">Basic Hip hop</p>
+                                    <p class="subtitle is-6">Instructor: Ngoc Ha</p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                A class on basic Hip hop moves and techniques for learners with previous experience.
+                                <a href="#">#basic</a>
+                                <a href="#">#hiphop</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="assets\hiphop_bgnr.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4">Hip hop Beginners</p>
+                                    <p class="subtitle is-6">Instructor: Bao Thy</p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                A class for learners with zero experience in dancing in general and Hip hop dance particularly.
+                                <a href="#">#hiphop</a>
+                                <a href="#">#beginners</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="assets\house.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4">House Dance</p>
+                                    <p class="subtitle is-6">Instructor: Vy Thao</p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                An introduction class on basic House dance, suitable for learners with some previous experience.
+                                <a href="#">#house</a>
+                                <a href="#">#basic</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container2 has-text-centered">
+            <h2 class="title">Schedules</h2>
+            <img src="assets\schedule.png">
+    </section>
+
+    <hr>
+    <footer class="row"> 
+        <!-- not displayed in columns still -->
+        <div class="column"> 
+            <img class="logo" src="assets\logo.png" style="width: 100px; height: auto;">
+            <br>
+            <br>
+            <h4 class="bd-footer-title  
+                       has-text-weight-medium  
+                       has-text-justify"> 
+              Address 
+            </h4> 
+        
+            <p class="bd-footer-link"> 
+                <p>Tầng 3, SS Club Yogo & Fitness</p>
+                <p>434 Nguyễn Tất Thành, P. Tân Dân</p>
+                <p>Việt Trì, Phú Thọ</p> 
+            </p> 
+        </div>
+
+        <!-- Column 2-->
+        <div class="column"> 
+            <h4 class="bd-footer-title  
+                       has-text-weight-medium  
+                       has-text-justify"> 
+                Contact number 
+            </h4> 
+            <p class="bd-footer-link"> 
+                <p>+ 84 911196919</p>
+                <p>+ 84 945040182</p>
+                <br>
+            </p> 
+
+            <h4 class="bd-footer-title  
+                       has-text-weight-medium  
+                       has-text-justify"> 
+                Follow us 
+            </h4> 
+            <p>
+                <a href="https://www.facebook.com/profile.php?id=61561402863740">
+                    <i class="fab fa-facebook is-rounded fa-2x"></i>
+                </a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -30,7 +30,7 @@ class AccountManager(BaseUserManager):
         user = self.model(
             username = username,
             full_name = full_name,
-            password = password,
+            # password = password,
             birth_year = birth_year,
             facebook_url = facebook_url,
             phone_number = phone_number,
@@ -42,7 +42,7 @@ class AccountManager(BaseUserManager):
         return user
     
     def create_superuser(self, username, full_name, birth_year=None, facebook_url=None, phone_number=None, email=None, password=None, **extra_fields):
-        user = self.create_user(
+        user: "User" = self.create_user(
             username=username,
             full_name=full_name,
             birth_year=birth_year,
@@ -51,14 +51,8 @@ class AccountManager(BaseUserManager):
             email=email,
             password=password,
         )
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("is_active", True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('Superuser must have is_staff=True.'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser must have is_superuser=True.'))
+        user.is_staff = True
+        user.is_superuser = True
 
         user.save()    
         return user
@@ -92,7 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     registered_classes = models.ManyToManyField('classes.Class', related_name='students')
 
     def save(self, **kwargs) -> None:
-        self.set_password(self.password)
+        # self.set_password(self.password)
         return super().save(**kwargs)
 
     def register(self, class_title):

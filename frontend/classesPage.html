@@ -15,10 +15,14 @@
                     });
             });
         </script>
+
         <title>Classes</title>
         <!-- Bulma Version 1-->
         <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" />
         <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+        <script src="register.js"></script>
+
     </head>
     
     <body>
@@ -26,6 +30,59 @@
         <section class="section">
             <h2 class="has-text-centered">Classes</h2>
         </section>
+
+        <table>
+            <thead><tr>
+                <th>Class name</th><th>Schedule</th><th>Start date</th><th>Description</th><th></th>
+            </tr></thead>
+
+            <tbody data-bind="foreach: classList">
+                <tr>
+                    <td data-bind="text: title"></td>
+                    <td data-bind="text: schedule"></td>
+                    <td data-bind="text: start_date"></td>
+                    <td data-bind="text: description"></td>
+                    <td><button class="button is-info is-outlined" data-bind="click: function() {handleRegistration(endpoint)}">Register</button></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <script type = "text/javascript">
+            function classInfo(classItem) {
+                var self = this;
+                self.title = classItem['title'];
+                self.schedule = classItem['schedule'];
+                self.start_date = classItem['start_date'];
+                self.description = classItem['body'];
+                self.endpoint = classItem['endpoint']
+            }
+
+            function ClassViewModel() {
+
+                this.classList = ko.observableArray([
+                ]);
+                this.getClassList = function() {
+                    const endpoint = `http://localhost:8000/api/classes/`;
+                    // const options = getFetchOptions();
+
+                    fetch(endpoint)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.results);
+                            // this.classList.push(data.results);
+                            for (i = 0; i < (data.results).length; i++) {
+                                this.classList.push(classInfo(data.results[i]))
+                            }
+                        });
+                }.bind(this);
+
+                this.getClassList();
+            }
+
+            ko.applyBindings(new ClassViewModel());
+          
+        </script>
+
     </body>
 
 </html>

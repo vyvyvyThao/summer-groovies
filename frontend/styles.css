@@ -35,3 +35,24 @@ footer.row:after {
     display: table;
     clear: both;
 }
+
+table {
+    width: 100%;
+    margin-left: 20px;
+    /* padding-bottom: 10px; */
+}
+
+/*td {
+    border: 1px solid; 
+}*/
+
+button {
+    size: inherit;
+    height: 90%;
+}
+
+#search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

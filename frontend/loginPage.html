@@ -2,8 +2,22 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                fetch('navbar.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('navbar-container').innerHTML = data;
+                    });
+            });
+        </script>
+        <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" />
+        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"></script>
     </head>
     <body>
+        <div id="navbar-container"></div>
         <form id="login-form">
             <input type="text" name="username" placeholder="Your Username" />
             <input type="password" name="password" placeholder="Your Password" />
@@ -12,19 +26,14 @@
 
         <div id="content-container"></div>
 
-        <div id="searchbox"></div>
+        <!-- <div id="searchbox"></div>
         <div id="clear-refinements"></div>
-        <div id="user-list"></div>
+        <div id="user-list"></div> -->
         
-        <div><h3>Public</h3>
+        <!-- <div><h3>Public</h3>
             <div id="public-list"></div>
-        </div>
+        </div> -->
         
-        <div id="hits"></div>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js" integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js" integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
 
         <script src="js_client/client.js"></script>
 

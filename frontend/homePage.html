@@ -20,6 +20,26 @@
     <!-- Bulma Version 1-->
     <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"></script>
+    <script>
+        function run_test() {
+            let url = "http://localhost:8000/api/v2/classes/1/register";
+            console.log(url);
+            fetch(url, {
+                "Content-Type": "application/json",
+                method: "GET",
+                mode: 'cors',
+                credentials: "include"
+            })
+                .then(async response => {
+                    console.log(response);
+                    let data = await response.text();
+                    console.log("text:", data);
+                })
+                .catch(data => {
+                    console.log(data);
+                })
+        }
+    </script>
 </head>
 
 <body>

@@ -48,8 +48,8 @@ class_mixin_view = ClassMixinView.as_view()
 
 # create, read
 class ClassListCreateAPIView(
-    UserQuerysetMixin,
-    StaffEditorPermissionMixin, 
+    # UserQuerysetMixin,
+    # StaffEditorPermissionMixin, 
     generics.ListCreateAPIView):
 
     queryset = Class.objects.all()

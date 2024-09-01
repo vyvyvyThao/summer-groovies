@@ -20,17 +20,25 @@ class UserQuerySet(models.QuerySet):
             qs = (qs | qs2).distinct()
         return qs
 
+class User():
+    pass
+
 class AccountManager(BaseUserManager):
+
     def create_user(self, username, full_name, birth_year, facebook_url, phone_number, email, password):
+
+        print('username:', username)
+        print('pass:', password)
+
         if not username:
             raise ValueError("You must have username")
-        if not password:
+        if password is None:
             raise ValueError("You must have password")
         
-        user = self.model(
+        user = User(
             username = username,
             full_name = full_name,
-            # password = password,
+            password = password,
             birth_year = birth_year,
             facebook_url = facebook_url,
             phone_number = phone_number,

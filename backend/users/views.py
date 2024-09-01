@@ -1,5 +1,5 @@
 from rest_framework import generics, mixins
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -10,17 +10,21 @@ from django.shortcuts import get_object_or_404
 from .models import User
 from .serializers import UserSerializer
 
-from . import search_client
-
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
+
+    def perform_create(self):
+        super().perform_create()
+
+
 class UserDetailView(generics.RetrieveAPIView):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 # class SearchListView(generics.ListAPIView):
 #     permission_classes = [IsAdminUser]
@@ -74,6 +78,18 @@ class UserUpdateAPIView(generics.UpdateAPIView):
         if not instance.content:
             instance.content = instance.title
 
+class RegisterAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'pk'
+
+    def perform_update(self, request, *args, **kwargs):
+        __import__("pdb").set_trace()
+        className = request.query_params[0]
+        request.user.register(className)
+        request.user.save()
+
 
 class UserDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAdminUser]
@@ -86,8 +102,8 @@ class UserDeleteView(generics.DestroyAPIView):
         super().perform_destroy(instance)
 
     
-@api_view(['GET', 'POST'])
-def product_alt_view(request, pk=None, *args, **kwargs):
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+def user_alt_view(request, pk=None, *args, **kwargs):
     method = request.method  
 
     if method == "GET":
@@ -110,3 +126,6 @@ def product_alt_view(request, pk=None, *args, **kwargs):
             return Response(serializer.data)
         
         return Response({"invalid": "not good data"}, status=400)
+    
+    # if method == "PATCH":
+    #     if request.user

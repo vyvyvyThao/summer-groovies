@@ -7,13 +7,15 @@ from . import validators
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(validators=[validators.validate_username_no_special_char])
     class_names = serializers.SerializerMethodField()
+    # pk = serializers.IntegerField(source='pk')
 
     class Meta: 
         model = User
         fields = [
+                'pk',
                 'username',
                 'full_name',
-                'password',
+                # 'password',
                 'birth_year',
                 'facebook_url',
                 'phone_number',
